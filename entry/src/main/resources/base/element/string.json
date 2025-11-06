@@ -1,0 +1,56 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "MindMaze"
+    },
+    {
+      "name": "EntryBackupAbility_label",
+      "value": "MindMaze Backup"
+    },
+    {
+      "name": "btn_start",
+      "value": "Start"
+    },
+    {
+      "name": "btn_retry",
+      "value": "Retry"
+    },
+    {
+      "name": "status_ready",
+      "value": "Ready"
+    },
+    {
+      "name": "status_watch",
+      "value": "Watch…"
+    },
+    {
+      "name": "status_your_turn",
+      "value": "Your turn!"
+    },
+    {
+      "name": "status_correct",
+      "value": "Nice!"
+    },
+    {
+      "name": "status_wrong",
+      "value": "Oops!"
+    },
+    {
+      "name": "label_score",
+      "value": "Score"
+    },
+    {
+      "name": "label_best",
+      "value": "Best"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "color": [
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "base_background_gradient_end",
+      "value": "#FF0B1F3B"
+    },
+    {
+      "name": "base_background_gradient_start",
+      "value": "#FF00050A"
+    },
+    {
+      "name": "tile_red",
+      "value": "#E74C3C"
+    },
+    {
+      "name": "tile_green",
+      "value": "#2ECC71"
+    },
+    {
+      "name": "tile_blue",
+      "value": "#3498DB"
+    },
+    {
+      "name": "tile_yellow",
+      "value": "#F1C40F"
+    },
+    {
+      "name": "tile_dim",
+      "value": "#1D1D1D"
+    }
+  ]
+}
