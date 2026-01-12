@@ -1,12 +1,13 @@
 // entry/src/main/ets/services/GameService.ets
 import { delay } from '../utils/Delay';
 import { Phase, type GameState } from '../model/GameTypes';
+import {secureRandomIntSync } from '../utils/Random';
 
 export class GameService {
   newGame(): GameState {
     return {
       phase: Phase.Idle,
-      pattern: [],
+      pattern: [] as number[],
       userIndex: 0,
       level: 0,
       score: 0,
@@ -14,12 +15,14 @@ export class GameService {
       speedMs: 700,
       lives: 3,
       flashTile: -1,
+      bonusMs: 0,
       status: 'Ready'
     };
   }
 
+
   addStep(state: GameState): void {
-    const next: number = Math.floor(Math.random() * 4);
+    const next: number = secureRandomIntSync(4);
     state.pattern.push(next);
   }
 

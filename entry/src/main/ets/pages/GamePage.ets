@@ -1,6 +1,7 @@
 import { BaseViewModel } from '../viewmodel/BaseViewModel';
 import { RouteName } from '../services/NavigationService';
 import { HapticService } from '../services/HapticService';
+import { secureRandomIntSync } from '../utils/Random';
 
 type Phase = 'Idle' | 'Playback' | 'Input' | 'RoundResult' | 'GameOver';
 
@@ -51,8 +52,9 @@ export struct GamePage {
     this.lives = 3;
     this.level = 1;
     this.combo = 0;
-    if (this.pattern.length === 0) this.addStep();
-
+    if (this.pattern.length === 0) {
+      this.addStep();
+    }
     this.phase = 'Playback';
     this.userIndex = 0;
     this.baseStartEpoch = Date.now();
@@ -82,7 +84,9 @@ export struct GamePage {
     const totalMs: number = START_MS + this.bonusMs;
     const elapsed: number = Date.now() - this.baseStartEpoch;
     let remain: number = totalMs - elapsed;
-    if (remain < 0) remain = 0;
+    if (remain < 0) {
+      remain = 0;
+    }
 
     this.remainingMsState = remain;
     this.totalSecUI = Math.ceil(totalMs / 1000);
@@ -94,13 +98,18 @@ export struct GamePage {
   }
 
   private fmt(ms: number): string {
-    const s = Math.max(0, Math.floor(ms / 1000));
-    const m = Math.floor(s / 60);
-    const ss = s % 60;
-    return `${m < 10 ? '0' : ''}${m}:${ss < 10 ? '0' : ''}${ss}`;
+    const totalSec = Math.max(0, Math.floor(ms / 1000));
+    const minutes = Math.floor(totalSec / 60);
+    const seconds = totalSec % 60;
+
+    const mm = String(minutes).padStart(2, '0');
+    const ss = String(seconds).padStart(2, '0');
+    return `${mm}:${ss}`;
   }
 
-  private randTile(): number { return Math.floor(Math.random() * 4); }
+  private randTile(): number {
+    return secureRandomIntSync(4);
+  }
 
   private addStep() {
     this.pattern.push(this.randTile());
@@ -113,19 +122,37 @@ export struct GamePage {
 
   private async playPattern(): Promise<void> {
     this.phase = 'Playback';
-    for (const id of this.pattern) {
-      this.flashTile = id;
+
+    const pattern: number[] = this.pattern.slice();
+    const speedMs: number = this.speedMs;
+    const gapMs: number = 180;
+    const sleepFn: (ms: number) => Promise<void> = (ms: number) => this.sleep(ms);
+    const setFlash: (v: number) => void = (v: number): void => { this.flashTile = v; };
+
+    const playStep = async (idx: number): Promise<void> => {
+      if (idx >= pattern.length) {
+        this.userIndex = 0;
+        this.phase = 'Input';
+        return;
+      }
+
+      const tileId: number = pattern[idx];
+      setFlash(tileId);
       HapticService.touch();
-      await this.sleep(this.speedMs);
-      this.flashTile = -1;
-      await this.sleep(180);
-    }
-    this.userIndex = 0;
-    this.phase = 'Input';
+      await sleepFn(speedMs);
+      setFlash(-1);
+      await sleepFn(gapMs);
+
+      await playStep(idx + 1);
+    };
+
+    await playStep(0);
   }
 
   private async tap(id: number): Promise<void> {
-    if (this.phase !== 'Input') return;
+    if (this.phase !== 'Input') {
+      return;
+    }
 
     const expected = this.pattern[this.userIndex];
     if (id === expected) {
@@ -157,15 +184,18 @@ export struct GamePage {
         this.showLevelUp = true;
         setTimeout(() => this.showLevelUp = false, 1000);
         this.addStep();
-        if (this.pattern.length % 3 === 0)
+        if (this.pattern.length % 3 === 0) {
           this.speedMs = Math.max(350, this.speedMs - 50);
+        }
         await this.playPattern();
       }
     } else {
       HapticService.fail();
       this.lives--;
       this.combo = 0;
-      if (this.lives <= 0) this.gameOver();
+      if (this.lives <= 0) {
+        this.gameOver();
+      }
     }
   }
 
@@ -188,7 +218,7 @@ export struct GamePage {
         .color(
           new LinearGradient([
             { color: Color.Yellow, offset: 0.3 },
-            { color: Color.Orange, offset: 1.0 },
+            { color: Color.Orange, offset: 1.0 }
           ])
         )
         .zIndex(1)
@@ -227,14 +257,18 @@ export struct GamePage {
           .margin({ top: 6, bottom: 4 })
 
         Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center }) {
-          ForEach(TILE_IDS, (id: number) => {
-            Button('')
-              .width(60).height(60)
-              .backgroundColor(this.flashTile === id ? colorFor(id) : `${colorFor(id)}80`)
-              .borderRadius(10)
-              .margin({ left: 4, right: 4, bottom: 4 })
-              .onClick(() => { void this.tap(id); })
-          })
+          ForEach(
+            TILE_IDS as number[],
+            (id: number, index: number): void => {
+              Button('')
+                .width(60).height(60)
+                .backgroundColor(this.flashTile === id ? colorFor(id) : `${colorFor(id)}80`)
+                .borderRadius(10)
+                .margin({ left: 4, right: 4, bottom: 4 })
+                .onClick((): void => { void this.tap(id); });
+            },
+            (id: number, index: number): string => String(id)
+          )
         }
 
         Button('Back')
@@ -242,7 +276,7 @@ export struct GamePage {
           .width(80)
           .height(28)
           .fontSize(10)
-          .onClick(() => this.vm.back())
+          .onClick((): void => this.vm.back())
       }
       .alignItems(HorizontalAlign.Center)
       .zIndex(3)

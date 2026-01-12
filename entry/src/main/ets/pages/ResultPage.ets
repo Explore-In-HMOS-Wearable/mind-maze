@@ -5,7 +5,7 @@ import { BaseViewModel } from '../viewmodel/BaseViewModel';
 export struct ResultPage {
   vm: BaseViewModel = new BaseViewModel();
 
-  @State score: number = 0;
+  private score: number = 0;
   @State best: number = 0;
   @State isNewRecord: boolean = false;
   @State displayScore: number = 0;
@@ -26,14 +26,30 @@ export struct ResultPage {
   }
 
   private async animateScore(): Promise<void> {
-    this.displayScore = 0;
-    const steps = 20;
-    const increment = Math.ceil(this.score / steps);
+    const target: number = this.score;
+    const steps: number = 20;
 
-    for (let i = 0; i < steps; i++) {
-      await new Promise<void>((resolve: () => void) => setTimeout(resolve, 30));
-      this.displayScore = Math.min(this.score, this.displayScore + increment);
+    if (target <= 0) {
+      this.displayScore = 0;
+      return;
     }
+
+    const increment: number = Math.max(1, Math.ceil(target / steps));
+    const sleep: (ms: number) => Promise<void> =
+      (ms: number) => new Promise<void>((resolve: () => void) => setTimeout(resolve, ms));
+
+    const step = async (current: number): Promise<void> => {
+      if (current >= target) {
+        this.displayScore = target;
+        return;
+      }
+      await sleep(30);
+      const next: number = Math.min(target, current + increment);
+      this.displayScore = next;
+      await step(next);
+    };
+
+    await step(0);
   }
 
   build() {

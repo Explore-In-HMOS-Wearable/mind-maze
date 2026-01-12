@@ -1,5 +1,6 @@
 import type { GameState } from '../model/GameTypes';
 import { gameService } from '../services/GameServices';
+import { secureRandomIntSync } from '../utils/Random';
 
 export enum Phase {
   Playback = 'Playback',
@@ -62,7 +63,9 @@ export class GameViewModel {
   }
 
   private isValidGameState(obj: object | null): boolean {
-    if (obj === null) return false;
+    if (obj === null){
+      return false;
+    }
 
     const test: Partial<GameState> = obj as Partial<GameState>;
     return (
@@ -84,15 +87,26 @@ export class GameViewModel {
     await this.start();
   }
 
+
   async tap(tileId: number): Promise<void> {
-    if (this.state.phase !== Phase.Input) return;
+    if (this.state.phase !== Phase.Input) {
+      return;
+    }
 
     const expected: number = this.state.pattern[this.state.userIndex];
     if (tileId === expected) {
       this.state.userIndex++;
       this.state.score++;
       this.state.bonusMs += this.BONUS_MS;
-      this.state.status = this.successMsgs[Math.floor(Math.random() * this.successMsgs.length)];
+
+      const sLen: number = this.successMsgs.length;
+      if (sLen > 0) {
+        const sIdx: number = secureRandomIntSync(sLen);
+        this.state.status = this.successMsgs[sIdx];
+      } else {
+        this.state.status = 'Ready';
+      }
+
       await this.flashTileOnce(tileId);
 
       if (this.state.userIndex >= this.state.pattern.length) {
@@ -107,7 +121,15 @@ export class GameViewModel {
       }
     } else {
       this.state.phase = Phase.RoundResult;
-      this.state.status = this.failMsgs[Math.floor(Math.random() * this.failMsgs.length)];
+
+      const fLen: number = this.failMsgs.length;
+      if (fLen > 0) {
+        const fIdx: number = secureRandomIntSync(fLen);
+        this.state.status = this.failMsgs[fIdx];
+      } else {
+        this.state.status = 'Ready';
+      }
+
       this.state.lives = Math.max(0, this.state.lives - 1);
       await this.delay(600);
 

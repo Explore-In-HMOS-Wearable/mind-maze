@@ -57,8 +57,8 @@ export struct GameOverPage {
       direction: GradientDirection.Bottom,
       colors: [
         [$r('app.color.base_background_gradient_start'), 0.0],
-        [$r('app.color.base_background_gradient_end'), 1.0],
-      ],
+        [$r('app.color.base_background_gradient_end'), 1.0]
+      ]
     })
   }
 }

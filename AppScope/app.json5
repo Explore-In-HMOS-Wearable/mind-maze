@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.hmosdemos.mindmaze",
+    "bundleName": "com.hmosdemos.wearable.mind_maze",
     "vendor": "hmosdemos",
     "versionCode": 1000000,
     "versionName": "1.0.0",

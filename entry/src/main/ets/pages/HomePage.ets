@@ -5,12 +5,12 @@ import { vibrator } from '@kit.SensorServiceKit';
 @Component
 export struct HomePage {
   vm: BaseViewModel = new BaseViewModel();
-  @State fadeIn: number = 1.0
-  @State bgShift: number = 0.0
+  static FADE_IN: number = 1.0;
+  static BG_SHIFT: number = 0.0;
 
   aboutToAppear(): void {
     setInterval(() => {
-      this.bgShift = (this.bgShift + 0.01) % 1.0
+      HomePage.BG_SHIFT = (HomePage.BG_SHIFT + 0.01) % 1.0
     }, 120)
   }
 
@@ -40,8 +40,8 @@ export struct HomePage {
         direction: GradientDirection.Bottom,
         colors: [
           ['#1976D2', 0.0],
-          ['#F57C00', 1.0],
-        ],
+          ['#F57C00', 1.0]
+        ]
       })
 
       Scroll() {
@@ -50,7 +50,7 @@ export struct HomePage {
             .fontSize(30)
             .fontWeight(FontWeight.Bolder)
             .fontColor(Color.White)
-            .opacity(this.fadeIn)
+            .opacity(HomePage.FADE_IN)
             .textAlign(TextAlign.Center)
             .margin({ top: 50 })
 
