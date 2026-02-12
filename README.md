@@ -10,10 +10,10 @@ The game shows an increasing tile pattern — you must repeat it in the correct 
 
 # Preview
 
-<div align="center">
-  <img src="screenshots/output_1.png" alt="Main Screen" width="24%" />
-  <img src="screenshots/output_2.png" alt="Growing Drop" width="24%" />
-  <img src="screenshots/output_3.png" alt="Goal Celebration" width="24%" />
+<div>
+  <img src="screenshots/output_1.png" alt="Main Screen" width="25%" />
+  <img src="screenshots/output_2.png" alt="Growing Drop" width="25%" />
+  <img src="screenshots/output_3.png" alt="Goal Celebration" width="25%" />
 </div>
 
 
