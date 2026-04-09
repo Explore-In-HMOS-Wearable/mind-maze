@@ -7,8 +7,12 @@ const TAG: string = 'MindMaze';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    this.context.getApplicationContext()
-      .setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
+    try {
+      this.context.getApplicationContext()
+        .setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
+    } catch (e) {
+      hilog.warn(DOMAIN, TAG, 'setColorMode failed %{public}s', String(e));
+    }
 
     let wantStr: string = '';
     let launchStr: string = '';

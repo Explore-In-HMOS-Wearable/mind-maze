@@ -2,7 +2,10 @@
 export enum RouteName {
   Home = 'Home',
   Game = 'Game',
-  Result = 'Result'
+  Result = 'Result',
+  Tutorial = 'Tutorial',
+  Settings = 'Settings',
+  History = 'History'
 }
 
 export class NavigationService {

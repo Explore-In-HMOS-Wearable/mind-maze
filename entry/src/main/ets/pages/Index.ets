@@ -2,6 +2,9 @@
 import { HomePage } from './HomePage';
 import { GamePage } from './GamePage';
 import { ResultPage } from './ResultPage';
+import { TutorialPage } from './TutorialPage';
+import { SettingsPage } from './SettingsPage';
+import { HistoryPage } from './HistoryPage';
 
 @Entry
 @Component
@@ -16,6 +19,12 @@ struct Index {
       GamePage();
     } else if (this.route === 'Result') {
       ResultPage();
+    } else if (this.route === 'Tutorial') {
+      TutorialPage();
+    } else if (this.route === 'Settings') {
+      SettingsPage();
+    } else if (this.route === 'History') {
+      HistoryPage();
     } else {
       HomePage();
     }
