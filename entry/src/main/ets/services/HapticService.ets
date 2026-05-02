@@ -15,7 +15,8 @@ export class HapticService {
         { type: 'preset', effectId: 'haptic.effect.click', count: 1 },
         { usage: HapticUsage.Touch }
       );
-    } catch (_) {}
+    } catch (_) {
+    }
   }
 
   static combo() {
@@ -24,7 +25,8 @@ export class HapticService {
         { type: 'preset', effectId: 'haptic.effect.soft', count: 1 },
         { usage: HapticUsage.Touch }
       );
-    } catch (_) {}
+    } catch (_) {
+    }
   }
 
   static fail() {
@@ -33,7 +35,8 @@ export class HapticService {
         { type: 'time', duration: 300 },
         { id: 0, usage: HapticUsage.Alarm }
       );
-    } catch (_) {}
+    } catch (_) {
+    }
   }
 
   static alarm() {
@@ -42,12 +45,14 @@ export class HapticService {
         { type: 'preset', effectId: 'haptic.clock.timer', count: 1 },
         { usage: HapticUsage.Alarm }
       );
-    } catch (_) {}
+    } catch (_) {
+    }
   }
 
   static stop() {
     try {
       vibrator.stopVibration();
-    } catch (_) {}
+    } catch (_) {
+    }
   }
 }

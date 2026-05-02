@@ -51,7 +51,9 @@
         "name": "ohos.permission.VIBRATE",
         "reason": "$string:EntryAbility_desc",
         "usedScene": {
-          "abilities": [ "EntryAbility" ],
+          "abilities": [
+            "EntryAbility"
+          ],
           "when": "always"
         }
       }
